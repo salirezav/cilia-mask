@@ -147,13 +147,16 @@ def OF_widget(img_layer: "napari.layers.Image") -> LayerDataTuple:
     """Widget to select an image and apply an operation."""
     result = calc_of(img_layer.data)
     # result = calc_of(img_layer.data)
-    return (result, {"name": f"Optical Flow {img_layer.name}"})
+    return (result, {"name": f"OF - {img_layer.name}"})
 
 
 @magic_factory(call_button="Run", order={"widget_type": "SpinBox", "min": 1, "value": 3, "max": 10})
 def AR_widget(img_layer: "napari.layers.Image", order: int = 3) -> LayerDataTuple:
     result = calc_AR(img_layer.data, order)
-    
-    layer_data = [(result, {"name": f"AR {i+1}"}) for i, result in enumerate(result)]
+
+    layer_data = [((image - np.min(image)) / (np.ptp(image) + 1e-8), {"name": f"AR {i+1} - {img_layer.name}"}) for i, image in enumerate(result)]
 
     return layer_data
+
+
+

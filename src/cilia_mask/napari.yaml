@@ -18,9 +18,9 @@ contributions:
   # - id: cilia-mask.make_container_widget
   #   python_name: cilia_mask:ImageThreshold
   #   title: Make threshold Container widget
-  # - id: cilia-mask.make_magic_widget
-  #   python_name: cilia_mask:threshold_magic_widget
-  #   title: Make threshold magic widget
+  - id: cilia-mask.make_magic_widget
+    python_name: cilia_mask:threshold_magic_widget
+    title: Make threshold magic widget
   # - id: cilia-mask.make_function_widget
   #   python_name: cilia_mask:threshold_autogenerate_widget
   #   title: Make threshold function widget
@@ -48,8 +48,8 @@ contributions:
   widgets:
   # - command: cilia-mask.make_container_widget
   #   display_name: Container Threshold (class)
-  # - command: cilia-mask.make_magic_widget
-  #   display_name: Magic Threshold (magic factory)
+  - command: cilia-mask.make_magic_widget
+    display_name: Magic Threshold (magic factory)
   # - command: cilia-mask.make_function_widget
   #   autogenerate: true
   #   display_name: Autogenerate Threshold (autogen)
