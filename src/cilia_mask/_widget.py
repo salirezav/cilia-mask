@@ -130,17 +130,16 @@ class ExampleQWidget(QWidget):
         print("napari has", len(self.viewer.layers), "layers")
 
 
-def calc_of(data: np.array, progress_callback=None) -> np.array:
+def calc_of(data: np.array) -> np.array:
     op = OF_AR()
-
-    flow_vid, rot, bwrot = op.calc_OF(data, progress_callback=progress_callback)
-
+    flow_vid, rot, bwrot = op.calc_OF(data)
     return rot
 
 
-def calc_AR(data: np.array) -> np.array:
+def calc_AR(data: np.array, order: int = 3) -> np.array:
     op = OF_AR()
-    image = op.AR(data, 3)
+    image = op.AR(data, order)
+    return image
 
 
 @magic_factory(call_button="Run")
@@ -151,7 +150,10 @@ def OF_widget(img_layer: "napari.layers.Image") -> LayerDataTuple:
     return (result, {"name": f"Optical Flow {img_layer.name}"})
 
 
-@magic_factory(call_button="Run", order={"widget_type": "SpinBox", "min": 1, "max": 10})
-def AR_widget(img_layer: "napari.layers.Image", order: int) -> LayerDataTuple:
-    result = calc_AR(img_layer, order)
-    return (result, {"name": f"AR"})
+@magic_factory(call_button="Run", order={"widget_type": "SpinBox", "min": 1, "value": 3, "max": 10})
+def AR_widget(img_layer: "napari.layers.Image", order: int = 3) -> LayerDataTuple:
+    result = calc_AR(img_layer.data, order)
+    
+    layer_data = [(result, {"name": f"AR {i+1}"}) for i, result in enumerate(result)]
+
+    return layer_data
