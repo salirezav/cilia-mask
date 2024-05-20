@@ -28,12 +28,22 @@ References:
 
 Replace code below according to your needs.
 """
+
+# %%
 from typing import TYPE_CHECKING
 
 from magicgui import magic_factory
-from magicgui.widgets import CheckBox, Container, create_widget
+from magicgui.widgets import CheckBox, Container, create_widget, ProgressBar
+import napari.layers
 from qtpy.QtWidgets import QHBoxLayout, QPushButton, QWidget
 from skimage.util import img_as_float
+import numpy as np
+from napari.types import LayerDataTuple
+from .utils import *
+
+
+# %%
+
 
 if TYPE_CHECKING:
     import napari
@@ -44,7 +54,7 @@ if TYPE_CHECKING:
 # a widget.
 def threshold_autogenerate_widget(
     img: "napari.types.ImageData",
-    threshold: "float", 
+    threshold: "float",
 ) -> "napari.types.LabelsData":
     return img_as_float(img) > threshold
 
@@ -53,12 +63,8 @@ def threshold_autogenerate_widget(
 # we specify a widget type for the threshold parameter
 # and use auto_call=True so the function is called whenever
 # the value of a parameter changes
-@magic_factory(
-    threshold={"widget_type": "FloatSlider", "max": 1}, auto_call=True
-)
-def threshold_magic_widget(
-    img_layer: "napari.layers.Image", threshold: "float"
-) -> "napari.types.LabelsData":
+@magic_factory(threshold={"widget_type": "FloatSlider", "max": 1}, auto_call=True)
+def threshold_magic_widget(img_layer: "napari.layers.Image", threshold: "float") -> "napari.types.LabelsData":
     return img_as_float(img_layer.data) > threshold
 
 
@@ -69,12 +75,8 @@ class ImageThreshold(Container):
         super().__init__()
         self._viewer = viewer
         # use create_widget to generate widgets from type annotations
-        self._image_layer_combo = create_widget(
-            label="Image", annotation="napari.layers.Image"
-        )
-        self._threshold_slider = create_widget(
-            label="Threshold", annotation=float, widget_type="FloatSlider"
-        )
+        self._image_layer_combo = create_widget(label="Image", annotation="napari.layers.Image")
+        self._threshold_slider = create_widget(label="Threshold", annotation=float, widget_type="FloatSlider")
         self._threshold_slider.min = 0
         self._threshold_slider.max = 1
         # use magicgui widgets directly
@@ -126,3 +128,30 @@ class ExampleQWidget(QWidget):
 
     def _on_click(self):
         print("napari has", len(self.viewer.layers), "layers")
+
+
+def calc_of(data: np.array, progress_callback=None) -> np.array:
+    op = OF_AR()
+
+    flow_vid, rot, bwrot = op.calc_OF(data, progress_callback=progress_callback)
+
+    return rot
+
+
+def calc_AR(data: np.array) -> np.array:
+    op = OF_AR()
+    image = op.AR(data, 3)
+
+
+@magic_factory(call_button="Run")
+def OF_widget(img_layer: "napari.layers.Image") -> LayerDataTuple:
+    """Widget to select an image and apply an operation."""
+    result = calc_of(img_layer.data)
+    # result = calc_of(img_layer.data)
+    return (result, {"name": f"Optical Flow {img_layer.name}"})
+
+
+@magic_factory(call_button="Run", order={"widget_type": "SpinBox", "min": 1, "max": 10})
+def AR_widget(img_layer: "napari.layers.Image", order: int) -> LayerDataTuple:
+    result = calc_AR(img_layer, order)
+    return (result, {"name": f"AR"})
