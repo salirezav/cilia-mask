@@ -29,7 +29,6 @@ References:
 Replace code below according to your needs.
 """
 
-# %%
 from typing import TYPE_CHECKING
 
 from magicgui import magic_factory
@@ -40,9 +39,6 @@ from skimage.util import img_as_float
 import numpy as np
 from napari.types import LayerDataTuple
 from .utils import *
-
-
-# %%
 
 
 if TYPE_CHECKING:
@@ -157,6 +153,3 @@ def AR_widget(img_layer: "napari.layers.Image", order: int = 3) -> LayerDataTupl
     layer_data = [((image - np.min(image)) / (np.ptp(image) + 1e-8), {"name": f"AR {i+1} - {img_layer.name}"}) for i, image in enumerate(result)]
 
     return layer_data
-
-
-

@@ -15,7 +15,11 @@ def read_avi_file(path: str) -> np.ndarray:
         frames.append(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY))  # Convert BGR to RGB
 
     cap.release()
-    return [(np.array(frames),{})]
+    return [(np.array(frames), {})]
+
+
+def read_npy_file(path: str) -> np.ndarray:
+    return [(np.load(path), {})]
 
 
 @napari_hook_implementation
@@ -23,6 +27,8 @@ def napari_get_reader(path):
     """Check if we can read the file format and return the reader function."""
     if isinstance(path, str) and path.endswith(".avi"):
         return read_avi_file
+    if isinstance(path, str) and path.endswith(".npy"):
+        return read_npy_file
     return None
 
 
