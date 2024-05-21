@@ -15,6 +15,15 @@ contributions:
   - id: cilia-mask.write_single_image
     python_name: cilia_mask._writer:write_single_image
     title: Save image data with cilia mask
+  - id: cilia-mask.OF_widget
+    python_name: cilia_mask:OF_widget
+    title: Optical Flow widget
+  - id: cilia-mask.AR_widget
+    python_name: cilia_mask:AR_widget
+    title: Autoregressive widget
+  - id: cilia-mask.IoUWidget
+    python_name: cilia_mask:IoUWidget
+    title: IoU widget
   # - id: cilia-mask.make_container_widget
   #   python_name: cilia_mask:ImageThreshold
   #   title: Make threshold Container widget
@@ -27,12 +36,6 @@ contributions:
   # - id: cilia-mask.make_qwidget
   #   python_name: cilia_mask:ExampleQWidget
   #   title: Make example QWidget
-  - id: cilia-mask.OF_widget
-    python_name: cilia_mask:OF_widget
-    title: Optical Flow widget
-  - id: cilia-mask.AR_widget
-    python_name: cilia_mask:AR_widget
-    title: Autoregressive widget
 
   readers:
   - command: cilia-mask.get_reader
@@ -46,16 +49,18 @@ contributions:
     layer_types: ['image']
     filename_extensions: ['.npy']
   widgets:
+  - command: cilia-mask.OF_widget
+    display_name: Optical Flow
+  - command: cilia-mask.AR_widget
+    display_name: Autoregressive
   # - command: cilia-mask.make_container_widget
   #   display_name: Container Threshold (class)
   - command: cilia-mask.make_magic_widget
     display_name: Magic Threshold (magic factory)
+  - command: cilia-mask.IoUWidget
+    display_name: IoU Widget
   # - command: cilia-mask.make_function_widget
   #   autogenerate: true
   #   display_name: Autogenerate Threshold (autogen)
   # - command: cilia-mask.make_qwidget
   #   display_name: Example QWidget
-  - command: cilia-mask.OF_widget
-    display_name: Optical Flow widget
-  - command: cilia-mask.AR_widget
-    display_name: Autoregressive widget

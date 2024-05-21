@@ -33,7 +33,7 @@ class OF_AR:
             self.rot.append(invariants.curl(opt[:, :, 0], opt[:, :, 1]))
             flow_vid.append(self.draw_flow(curr, opt))
             prev_flow = opt
-            
+
         flow_vid = np.array(flow_vid)
         self.rot = np.array(self.rot)
 
@@ -59,3 +59,11 @@ class OF_AR:
     # def do_raster(rot):
     #     X = raster_scan(rot).T
     #     X.shape
+
+
+def calculate_iou(layer1: np.ndarray, layer2: np.ndarray) -> float:
+    """Calculate Intersection over Union (IoU) between two layers."""
+    intersection = np.logical_and(layer1, layer2).sum()
+    union = np.logical_or(layer1, layer2).sum()
+    iou = intersection / union if union != 0 else 0
+    return iou

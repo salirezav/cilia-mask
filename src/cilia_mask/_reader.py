@@ -19,7 +19,9 @@ def read_avi_file(path: str) -> np.ndarray:
 
 
 def read_npy_file(path: str) -> np.ndarray:
-    return [(np.load(path), {})]
+    data = np.load(path)
+
+    return [(data[..., 1], {})]
 
 
 @napari_hook_implementation

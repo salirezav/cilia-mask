@@ -2,7 +2,7 @@ __version__ = "0.0.1"
 
 import os, sys
 from ._reader import napari_get_reader
-from ._widget import OF_widget, AR_widget, threshold_magic_widget
+from ._widget import OF_widget, AR_widget, threshold_magic_widget, IoUWidget
 from napari_plugin_engine import napari_hook_implementation
 
 # , ExampleQWidget, ImageThreshold, threshold_autogenerate_widget, threshold_magic_widget
@@ -18,6 +18,8 @@ __all__ = (
     "write_single_image",
     "write_multiple",
     "threshold_magic_widget",
+    "IoUWidget",
+    
     #    , "ExampleQWidget", "ImageThreshold", "threshold_autogenerate_widget", "threshold_magic_widget"
 )
 
@@ -27,4 +29,5 @@ def napari_experimental_provide_dock_widget():
     return [
         {"widget": AR_widget, "visible": True, "name": "AR Widget"},
         {"widget": OF_widget, "visible": True, "name": "OF Widget"},
+        {"widget": IoUWidget, "visible": True, "name": "IoU Widget"},
     ]
